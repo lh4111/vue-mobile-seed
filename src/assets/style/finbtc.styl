@@ -1,0 +1,175 @@
+@import 'partials/colors'
+@import 'partials/reset'
+@import 'partials/mixin'
+
+$directions = { t: top, r: right, b: bottom, l: left, v: top bottom, h: left right }
+
+// font-size
+for size in range(12, 50, 2)
+  .fz-{size}
+    font-size size px
+
+// color border background-color
+for $clazz, $color in $colors
+  .{$clazz}
+    if (match('bg', $clazz))
+      background-color $color
+    else if (match('bd', $clazz))
+      border(a, $color)
+    else
+      color $color
+
+for $d in $directions
+  .bd{$d}
+    border($d)
+
+// line-height
+for $size in 25 28 30 32 36 44 50 60 68 72 80 81 90 98 100 104 110 120
+  .line-height-{$size}
+    height $size px
+    line-height $size px
+
+// margin padding
+gap($size)
+  if ($size)
+    $suffix = - $size
+  else
+    $size = 20
+    $suffix = ''
+
+  .mg{$suffix}
+    margin $size px
+
+  .pd{$suffix}
+    padding $size px
+
+  for $d, $dirs in $directions
+    .mg{$d}{$suffix}
+      for $dir in $dirs
+        margin-{$dir} $size px
+
+    .pd{$d}{$suffix}
+      for $dir in $dirs
+        padding-{$dir} $size px
+
+for $size in range(4, 60, 1, 10)
+  gap($size)
+
+gap(0)
+
+// position
+for $pos in relative absolute fixed
+  .{$pos}
+    position $pos
+
+// display
+for $dis in block inline-block none
+  .{$dis}
+    display $dis
+
+.flex
+  display flex
+  align-items center
+  &.justify-center
+    justify-content center
+  &.col
+    flex-direction: column
+
+  for $i in 1 .. 4
+    > .grow-{$i}
+      flex-grow $i
+
+// align
+.center, .txt-center
+  text-align center
+
+.txt-right
+  text-align right
+
+.center-h
+  position relative
+  left 50%
+  transform translate3d(-50%, 0, 0)
+
+.center-v
+  position relative
+  top 50%
+  transform translate3d(0, -50%, 0)
+
+.center-a
+  position relative
+  top 50%
+  left 50%
+  transform translate3d(-50%, -50%, 0)
+
+// common
+.scrollable
+  -webkit-overflow-scrolling touch
+  overflow-x auto
+  overflow-y hidden
+  white-space nowrap
+  font-size 0
+
+  > *
+    display inline-block
+
+$line-clamp
+  overflow hidden
+  word-break break-all
+  text-overflow ellipsis
+
+  .android &:not([class*='line-height'])
+    line-height 1.1
+
+.line-clamp, .line-clamp-1
+  @extend $line-clamp
+  -webkit-line-clamp 1
+  white-space nowrap
+
+.line-clamp-2
+  @extend $line-clamp
+  display -webkit-box
+  line-height 1.2
+  -webkit-box-orient vertical
+  -webkit-line-clamp 2
+
+.line-clamp-3
+  @extend $line-clamp
+  display -webkit-box
+  line-height 1.2
+  -webkit-box-orient vertical
+  -webkit-line-clamp 3
+
+.line-clamp-4
+  @extend $line-clamp
+  display -webkit-box
+  line-height 1.2
+  -webkit-box-orient vertical
+  -webkit-line-clamp 4
+
+.text
+  word-break break-all
+  line-height 1.5
+
+  img
+    display inline-block
+    vertical-align top
+    height 40px
+    width 40px
+
+.round
+  border-radius 50%
+
+.bold
+  font-weight bold
+
+.fl
+  float left
+
+.fr
+  float right
+
+#app,
+.page
+  height 100%
+  user-select none
