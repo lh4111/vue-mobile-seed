@@ -1,11 +1,12 @@
 # Vue Mobile Seed
 > A Vue.js mobile project
 
-# Technology stack
+## Technology stack
   - [pug](https://pugjs.org/api/getting-started.html)
   - [stylus](http://stylus-lang.com/)
   - PostCss
-# Feature
+
+## Feature
   - No `colons` `semi-colons` `commas` `braces` in css
   - No `tags` in html
   - Easy flexible layout, autoprefix , px2rem
