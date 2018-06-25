@@ -1,44 +1,44 @@
-import axios from 'axios'
-import { API_BASE_URL } from '../config'
+import axios from "axios";
+import { API_BASE_URL } from "../config";
 
-axios.defaults.timeout = 10000
-axios.defaults.baseURL = API_BASE_URL
+axios.defaults.timeout = 10000;
+axios.defaults.baseURL = API_BASE_URL;
 
 axios.get = (url, params) => {
   return axios.request({
     url: url,
-    method: 'get',
+    method: "get",
     params: params || {}
-  })
-}
+  });
+};
 // http request 拦截器
 axios.interceptors.request.use(
   config => {
-    config.headers['Token'] = localStorage.getItem('token')
-    return config
+    config.headers["Token"] = localStorage.getItem("token");
+    return config;
   },
   err => {
-    return Promise.reject(err)
+    return Promise.reject(err);
   }
-)
+);
 
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
-    const { code, data } = response.data
+    const { code, data } = response.data;
     if (code) {
       if (code === 10001) {
-        localStorage.setItem('token', '')
-        setTimeout(() => (location.href = '/'), 1500)
+        localStorage.setItem("token", "");
+        setTimeout(() => (location.href = "/"), 1500);
       }
-      return Promise.reject(response.data)
+      return Promise.reject(response.data);
     } else {
-      return data
+      return data;
     }
   },
   error => {
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
-export default axios
+export default axios;

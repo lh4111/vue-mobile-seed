@@ -1,5 +1,3 @@
-import user from './module/user'
+import user from "./module/user";
 
-export {
-  user
-}
+export { user };

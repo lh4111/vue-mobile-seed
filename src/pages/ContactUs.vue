@@ -53,15 +53,13 @@
 </template>
 
 <script>
-import icon from '../components/Icon'
+import icon from "../components/Icon";
 export default {
   components: { icon },
   data() {
-    return {}
+    return {};
   },
-  created() {
-
-  },
+  created() {},
   methods: {}
-}
+};
 </script>

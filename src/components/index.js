@@ -1,6 +1,10 @@
-import Scroll from './Scroll'
+import Vue from "vue";
+import Scroll from "./Scroll";
 
-// Global Components
-export default {
+const GlobalComponents = {
   Scroll
-}
+};
+
+Object.keys(GlobalComponents).forEach(key =>
+  Vue.component(key, GlobalComponents[key])
+);

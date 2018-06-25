@@ -28,20 +28,20 @@ export default {
   },
   data() {
     return {
-      icon: require('../assets/icons/' + this.name)
-    }
+      icon: require("../assets/icons/" + this.name)
+    };
   },
   computed: {
     imgStyle() {
       let style = {
-        width: this.size / 100 + 'rem',
-        height: this.size / 100 + 'rem'
-      }
-      this.gray && (style.filter = 'brightness(1.4) grayscale(1)')
-      return style
+        width: this.size / 100 + "rem",
+        height: this.size / 100 + "rem"
+      };
+      this.gray && (style.filter = "brightness(1.4) grayscale(1)");
+      return style;
     }
   },
   created() {},
   methods: {}
-}
+};
 </script>

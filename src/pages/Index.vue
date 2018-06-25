@@ -1,7 +1,3 @@
-<style lang="stylus">
-.page.index
-</style>
-
 <template lang="pug">
   .page.index.bg.blue.fz-50.center.bdb.pdv-50 {{ msg }}
 </template>
@@ -10,10 +6,10 @@
 export default {
   data() {
     return {
-      msg: 'Hello',
-    }
+      msg: "Hello"
+    };
   },
   created() {},
   methods: {}
-}
+};
 </script>

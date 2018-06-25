@@ -23,38 +23,38 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll'
-import Loading from './loading/Loading.vue'
-import Bubble from './bubble/Bubble.vue'
-const DIRECTION_H = 'horizontal'
-const DIRECTION_V = 'vertical'
+import BScroll from "better-scroll";
+import Loading from "./loading/Loading.vue";
+import Bubble from "./bubble/Bubble.vue";
+const DIRECTION_H = "horizontal";
+const DIRECTION_V = "vertical";
 
 const getRect = el => {
   if (el instanceof window.SVGElement) {
-    let rect = el.getBoundingClientRect()
+    let rect = el.getBoundingClientRect();
     return {
       top: rect.top,
       left: rect.left,
       width: rect.width,
       height: rect.height
-    }
+    };
   } else {
     return {
       top: el.offsetTop,
       left: el.offsetLeft,
       width: el.offsetWidth,
       height: el.offsetHeight
-    }
+    };
   }
-}
+};
 
 export default {
-  name: 'scroll',
+  name: "scroll",
   props: {
     data: {
       type: Array,
       default: function() {
-        return []
+        return [];
       }
     },
     probeType: {
@@ -113,42 +113,42 @@ export default {
       isPullingDown: false,
       isPullUpLoad: false,
       pullUpDirty: true,
-      pullDownStyle: '',
+      pullDownStyle: "",
       bubbleY: 0
-    }
+    };
   },
   computed: {
     pullUpTxt() {
       const moreTxt =
         (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) ||
-        '加载更多'
+        "加载更多";
       const noMoreTxt =
-        (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore) ||
-        '没有更多了'
-      return this.pullUpDirty ? moreTxt : noMoreTxt
+        (this.pullUpLoad &&
+          this.pullUpLoad.txt &&
+          this.pullUpLoad.txt.noMore) ||
+        "没有更多了";
+      return this.pullUpDirty ? moreTxt : noMoreTxt;
     },
     refreshTxt() {
-      return (
-        (this.pullDownRefresh && this.pullDownRefresh.txt) ||
-        '下拉刷新'
-      )
+      return (this.pullDownRefresh && this.pullDownRefresh.txt) || "下拉刷新";
     }
   },
   created() {
-    this.pullDownInitTop = -50
+    this.pullDownInitTop = -50;
   },
   mounted() {
     this.$nextTick(() => {
-      this.initScroll()
-    })
+      this.initScroll();
+    });
   },
   methods: {
     initScroll() {
       if (!this.$refs.wrapper) {
-        return
+        return;
       }
       if (this.$refs.listWrapper && (this.pullDownRefresh || this.pullUpLoad)) {
-        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`
+        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper)
+          .height + 1}px`;
       }
       let options = {
         probeType: this.probeType,
@@ -161,117 +161,120 @@ export default {
         startY: this.startY,
         freeScroll: this.freeScroll,
         mouseWheel: this.mouseWheel
-      }
-      this.scroll = new BScroll(this.$refs.wrapper, options)
+      };
+      this.scroll = new BScroll(this.$refs.wrapper, options);
       if (this.listenScroll) {
-        this.scroll.on('scroll', pos => {
-          this.$emit('scroll', pos)
-        })
+        this.scroll.on("scroll", pos => {
+          this.$emit("scroll", pos);
+        });
       }
       if (this.listenBeforeScroll) {
-        this.scroll.on('beforeScrollStart', () => {
-          this.$emit('beforeScrollStart')
-        })
+        this.scroll.on("beforeScrollStart", () => {
+          this.$emit("beforeScrollStart");
+        });
       }
       if (this.pullDownRefresh) {
-        this._initPullDownRefresh()
+        this._initPullDownRefresh();
       }
       if (this.pullUpLoad) {
-        this._initPullUpLoad()
+        this._initPullUpLoad();
       }
     },
     disable() {
-      this.scroll && this.scroll.disable()
+      this.scroll && this.scroll.disable();
     },
     enable() {
-      this.scroll && this.scroll.enable()
+      this.scroll && this.scroll.enable();
     },
     refresh() {
-      this.scroll && this.scroll.refresh()
+      this.scroll && this.scroll.refresh();
     },
     scrollTo() {
-      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments);
     },
     scrollToElement() {
-      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
+      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);
     },
     clickItem(e, item) {
-      console.log(e)
-      this.$emit('click', item)
+      this.$emit("click", item);
     },
     destroy() {
-      this.scroll.destroy()
+      this.scroll.destroy();
     },
     forceUpdate(dirty) {
       if (this.pullDownRefresh && this.isPullingDown) {
-        this.isPullingDown = false
+        this.isPullingDown = false;
         this._reboundPullDown().then(() => {
-          this._afterPullDown()
-        })
+          this._afterPullDown();
+        });
       } else if (this.pullUpLoad && this.isPullUpLoad) {
-        this.isPullUpLoad = false
-        this.scroll.finishPullUp()
-        this.pullUpDirty = dirty
-        this.refresh()
+        this.isPullUpLoad = false;
+        this.scroll.finishPullUp();
+        this.pullUpDirty = dirty;
+        this.refresh();
       } else {
-        this.refresh()
+        this.refresh();
       }
     },
     _initPullDownRefresh() {
-      this.scroll.on('pullingDown', () => {
-        this.beforePullDown = false
-        this.isPullingDown = true
-        this.$emit('pullingDown')
-      })
-      this.scroll.on('scroll', pos => {
+      this.scroll.on("pullingDown", () => {
+        this.beforePullDown = false;
+        this.isPullingDown = true;
+        this.$emit("pullingDown");
+      });
+      this.scroll.on("scroll", pos => {
         if (this.beforePullDown) {
-          this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop)
-          this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`
+          this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop);
+          this.pullDownStyle = `top:${Math.min(
+            pos.y + this.pullDownInitTop,
+            10
+          )}px`;
         } else {
-          this.bubbleY = 0
+          this.bubbleY = 0;
         }
         if (this.isRebounding) {
-          this.pullDownStyle = `top:${10 - (this.pullDownRefresh.stop - pos.y)}px`
+          this.pullDownStyle = `top:${10 -
+            (this.pullDownRefresh.stop - pos.y)}px`;
         }
-      })
+      });
     },
     _initPullUpLoad() {
-      this.scroll.on('pullingUp', () => {
-        this.isPullUpLoad = true
-        this.$emit('pullingUp')
-      })
+      this.scroll.on("pullingUp", () => {
+        this.isPullUpLoad = true;
+        this.$emit("pullingUp");
+      });
     },
     _reboundPullDown() {
-      const { stopTime = 600 } = this.pullDownRefresh
+      const { stopTime = 600 } = this.pullDownRefresh;
       return new Promise(resolve => {
         setTimeout(() => {
-          this.isRebounding = true
-          this.scroll.finishPullDown()
-          resolve()
-        }, stopTime)
-      })
+          this.isRebounding = true;
+          this.scroll.finishPullDown();
+          resolve();
+        }, stopTime);
+      });
     },
     _afterPullDown() {
       setTimeout(() => {
-        this.pullDownStyle = `top:${this.pullDownInitTop}px`
-        this.beforePullDown = true
-        this.isRebounding = false
-        this.refresh()
-      }, 0)
+        this.pullDownStyle = `top:${this.pullDownInitTop}px`;
+        this.beforePullDown = true;
+        this.isRebounding = false;
+        this.refresh();
+      }, 0);
     }
   },
   watch: {
     data() {
       setTimeout(() => {
-        this.forceUpdate(true)
-      }, this.refreshDelay)
+        this.forceUpdate(true);
+      }, this.refreshDelay);
     }
   },
   components: {
     Loading,
     Bubble
   }
-}
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
