@@ -19,7 +19,13 @@
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
+
+# run e2e test
+npm run test:e2e
+
+# run unit test
+npm run test:unit
 
 # build for production with minification
 npm run build
